@@ -72,11 +72,11 @@ class DT_Reporting_App_Menu {
 
         ?>
         <div class="wrap">
-            <h2>Zume Map/Report</h2>
-            <h2 class="nav-tab-wrapper">
-                <a href="<?php echo esc_attr( $link ) . 'general' ?>"
-                   class="nav-tab <?php echo esc_html( ( $tab == 'general' || !isset( $tab ) ) ? 'nav-tab-active' : '' ); ?>">General</a>
-            </h2>
+            <h2>Reporting App</h2>
+<!--            <h2 class="nav-tab-wrapper">-->
+<!--                <a href="--><?php //echo esc_attr( $link ) . 'general' ?><!--"-->
+<!--                   class="nav-tab --><?php //echo esc_html( ( $tab == 'general' || !isset( $tab ) ) ? 'nav-tab-active' : '' ); ?><!--">General</a>-->
+<!--            </h2>-->
 
             <?php
             switch ($tab) {
@@ -133,64 +133,31 @@ class DT_Reporting_App_Tab_General {
         ?>
         <form method="post">
             <?php wp_nonce_field( 'heatmap_settings_nonce', 'heatmap_settings' )?>
-        <!-- Box -->
-        <table class="widefat striped">
-            <thead>
-            <tr>
-                <th>Heatmaps</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>
-                   Reporter Manager<br>
-                    <a href="<?php echo esc_url( site_url() ) ?>/zume_app/reporter_manager"><?php echo esc_url( site_url() ) ?>/zume_app/reporter_manager</a>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Last 100 Hours<br>
-                    <a href="<?php echo esc_url( site_url() ) ?>/zume_app/last100_hours"><?php echo esc_url( site_url() ) ?>/zume_app/last100_hours</a>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Church Heatmap<br>
-                    <a href="<?php echo esc_url( site_url() ) ?>/zume_app/heatmap_practitioners"><?php echo esc_url( site_url() ) ?>/zume_app/heatmap_practitioners</a>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Church Heatmap<br>
-                    <a href="<?php echo esc_url( site_url() ) ?>/zume_app/heatmap_churches"><?php echo esc_url( site_url() ) ?>/zume_app/heatmap_churches</a>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Trainings Cluster Map<br>
-                    <a href="<?php echo esc_url( site_url() ) ?>/zume_app/cluster_trainings"><?php echo esc_url( site_url() ) ?>/zume_app/cluster_trainings</a>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Streams Cluster Map<br>
-                    <a href="<?php echo esc_url( site_url() ) ?>/zume_app/cluster_streams"><?php echo esc_url( site_url() ) ?>/zume_app/cluster_streams</a>
-                </td>
-            </tr>
-
-            <!-- Zume -->
-            <tr>
-                <td>
-                    Network Activities Map<br>
-                    <a href="<?php echo esc_url( site_url() ) ?>/zume_app/heatmap_activity"><?php echo esc_url( site_url() ) ?>/zume_app/heatmap_activity</a>
-                </td>
-            </tr>
-
-            </tbody>
-        </table>
-        <br>
-        <!-- End Box -->
+            <!-- Box -->
+            <table class="widefat striped">
+                <thead>
+                <tr>
+                    <th>Heatmaps</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                       Self-Register and Link Retrieval App<br>
+                        <a href="<?php echo esc_url( site_url() ) ?>/reporting_app/access"><?php echo esc_url( site_url() ) ?>/reporting_app/access</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Portal Root<br>
+                        <a href="<?php echo esc_url( site_url() ) ?>/reporting_app/portal"><?php echo esc_url( site_url() ) ?>/reporting_app/portal</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <br>
         </form>
+        <!-- End Box -->
         <?php
     }
 

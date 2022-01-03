@@ -5,7 +5,7 @@
  * Description: Adds magic link reporting system for contacts to report new churches.
  * Text Domain: disciple-tools-reporting-app
  * Domain Path: /languages
- * Version:  0.2
+ * Version:  1.0
  * Author URI: https://github.com/ZumeProject
  * GitHub Plugin URI: https://github.com/DiscipleTools/disciple-tools-reporting-app
  * Requires at least: 4.7.0
@@ -20,14 +20,6 @@
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
-}
-
-if ( ! defined( 'GLOBAL_POPULATION_BLOCKS' ) ) {
-    define( 'GLOBAL_POPULATION_BLOCKS', 50000 );
-}
-
-if ( ! defined( 'US_POPULATION_BLOCKS' ) ) {
-    define( 'US_POPULATION_BLOCKS', 5000 );
 }
 
 /**
@@ -85,11 +77,7 @@ class DT_Reporting_App {
     private function __construct() {
 
         require_once( 'magic/heatmap.php' );
-        // polygon heat
-        require_once( 'magic/map-3-practitioners.php' );
-        require_once( 'magic/map-5-churches.php' );
-
-        require_once( 'magic/reporter.php' );
+        require_once( 'magic/access.php' );
         require_once( 'magic/portal.php' );
 
         require_once( 'magic/custom-tile.php' );
@@ -274,79 +262,3 @@ add_action( 'plugins_loaded', function (){
         }
     }
 } );
-
-
-if ( ! function_exists( 'persecuted_countries' ) ){
-    function persecuted_countries() : array {
-        return [
-            'North Korea',
-            'Afghanistan',
-            'Somolia',
-            'Libya',
-            'Pakistan',
-            'Eritrea',
-            'Sudan',
-            'Yemen',
-            'Iran',
-            'India',
-            'Syria',
-            'Nigeria',
-            'Saudi Arabia',
-            'Maldives',
-            'Iraq',
-            'Egypt',
-            'Algeria',
-            'Uzbekistan',
-            'Myanmar',
-            'Laos',
-            'Vietnam',
-            'Turkmenistan',
-            'China',
-            'Mauritania',
-            'Central African Republic',
-            'Morocco',
-            'Qatar',
-            'Burkina Faso',
-            'Mali',
-            'Sri Lanka',
-            'Tajikistan',
-            'Nepal',
-            'Jordan',
-            'Tunisia',
-            'Kazakhstan',
-            'Turkey',
-            'Brunei',
-            'Bangladesh',
-            'Ethiopia',
-            'Malaysia',
-            'Colombia',
-            'Oman',
-            'Kuwait',
-            'Kenya',
-            'Bhutan',
-            'Russian Federation',
-            'United Arab Emirates',
-            'Cameroon',
-            'Indonesia',
-            'Niger'
-        ];
-    }
-}
-
-function movement_maps_stats_plugin_must_be_multisite() {
-    $message = __( "'Movement Maps & Stats' plugin must be run on a multisite server with a network dashboard enabled disciple tools system. Please disable plugin.", "dt_dashboard_plugin" );
-    ?>
-    <div class="notice notice-error notice-dt-dashboard is-dismissible" data-notice="dt-dashboard">
-        <p><?php echo esc_html( $message );?></p>
-    </div>
-    <?php
-}
-function movement_maps_stats_plugin_must_not_be_disciple_tools() {
-    $message = __( "'Movement Maps & Stats' plugin is to be installed on a non-disciple tools website on a multisite server with a network dashboard enabled disciple tools system.", "dt_dashboard_plugin" );
-    ?>
-    <div class="notice notice-error notice-dt-dashboard is-dismissible" data-notice="dt-dashboard">
-        <p><?php echo esc_html( $message );?></p>
-    </div>
-    <?php
-}
-

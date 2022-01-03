@@ -3,15 +3,13 @@ if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 
 /**
- * Class Zume_App_Portal
+ * Class DT_Reporting_App_Portal
  */
-class Zume_App_Portal extends DT_Magic_Url_Base {
+class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
 
-    public $magic = false;
-    public $parts = false;
     public $page_title = 'Reporting Portal';
     public $page_description = 'This is a portal for reporting church multiplication and community practitioner profile.';
-    public $root = "zume_app";
+    public $root = "reporting_app";
     public $type = 'portal';
     public $type_name = 'Reporting Portal';
     public $show_bulk_send = true;
@@ -20,7 +18,7 @@ class Zume_App_Portal extends DT_Magic_Url_Base {
     public $post_id;
     public $post;
     public $post_type = 'contacts';
-    private $meta_key = '';
+//    private $meta_key = '';
     public $type_actions = [
         '' => "Home",
         'profile' => "Profile",
@@ -45,12 +43,15 @@ class Zume_App_Portal extends DT_Magic_Url_Base {
 
         add_action( 'rest_api_init', [ $this, 'add_endpoints' ] );
 
-
         /**
          * tests if other URL
          */
         $url = dt_get_url_path();
         if ( strpos( $url, $this->root . '/' . $this->type ) === false ) {
+            return;
+        }
+        if ( empty( $this->parts['public_key'] ) ) {
+            wp_redirect( '/reporting_app/access' );
             return;
         }
         /**
@@ -59,6 +60,8 @@ class Zume_App_Portal extends DT_Magic_Url_Base {
         if ( !$this->check_parts_match() ){
             return;
         }
+
+
 
         // load if valid url
         $this->root_url = site_url() . '/' . $this->parts['root'] . '/' . $this->parts['type'] . '/' . $this->parts['public_key'] . '/';
@@ -258,13 +261,82 @@ class Zume_App_Portal extends DT_Magic_Url_Base {
         <?php
     }
 
+    public function header_javascript(){
+        if ( '' === $this->parts['action'] ) {
+            ?>
+            <script>
+                jQuery(document).ready(function(){
+                    window.onload = () => {
+                        let viewed = Cookies.get('portal_intro_home')
+                        if ( typeof viewed === 'undefined' ) {
+                            introJs().setOptions({
+                                steps: [
+                                    {
+                                        title: 'Welcome',
+                                        intro: 'Thank you for reporting your movement activity for our community!<br><br>This link is a permanent link for you. You can add it to your homescreen on your phone or save it as a bookmark.'
+                                    },
+                                    {
+                                        element: document.querySelector('.float'),
+                                        intro: 'Create new churches at any time.'
+                                    },
+                                    {
+                                        element: document.querySelector('.intro-profile'),
+                                        intro: 'Setup your community profile so we know where your are pushing for the kingdom and how to connect other practitioners with you.'
+                                    },
+                                    {
+                                        element: document.querySelector('.intro-church-list'),
+                                        intro: 'Edit your simple churches and order them according to their generations.'
+                                    },
+                                    {
+                                        element: document.querySelector('.intro-map'),
+                                        intro: 'View your simple churches on your personal map and view them with the goals map for the entire community.'
+                                    },
+                                    {
+                                        element: document.querySelector('#menu-icon'),
+                                        intro: 'Use the slide menu to navigate through the portal.'
+                                    }
+                                ]
+                            }).start();
+
+                            Cookies.set('portal_intro_home', true )
+                        }
+                    }
+                })
+            </script>
+            <?php
+        } else if ( 'list' === $this->parts['action'] ) {
+            ?>
+            <script>
+                jQuery(document).ready(function(){
+                    window.onload = () => {
+                        let viewed = Cookies.get('portal_intro_list')
+                        if ( typeof viewed === 'undefined' ) {
+                            introJs().setOptions({
+                                steps: [
+                                    {
+                                        title: 'Edit Church List',
+                                        intro: 'Once a church is added you can arrange it according to generation. <img src="<?php echo plugin_dir_url(__FILE__) ?>/images/nesting-generations.gif" />'
+                                    }
+                                ]
+                            }).start();
+
+                            Cookies.set('portal_intro_list', true )
+                        }
+                    }
+                })
+            </script>
+            <?php
+        }
+
+    }
+
     /**
      * Writes javascript to the footer
      *
      * @see DT_Magic_Url_Base()->footer_javascript() for default state
      */
     public function footer_javascript(){
-        if ( empty( $this->post ) ) {
+        if ( empty( $this->post ) && ! empty( $this->parts["post_id"] ) ) {
             $this->post_id = $this->parts["post_id"];
             $this->post = DT_Posts::get_post( $this->post_type, $this->parts["post_id"], true, false );
             if ( is_wp_error( $this->post ) ){
@@ -431,9 +503,6 @@ class Zume_App_Portal extends DT_Magic_Url_Base {
             <div class="cell padding-1" >
                 <button type="button" style="margin:1em .5em 1em; color: black;" id="menu-icon" data-open="offCanvasLeft"><i class="fi-list"></i></button>
                 <span style="font-size:1.5rem;font-weight: bold;">Home</span>
-                <?php if ( ! wp_is_mobile() ) : ?>
-                    <span class="loading-spinner active"></span>
-                <?php endif; ?>
             </div>
         </div>
 
@@ -443,8 +512,8 @@ class Zume_App_Portal extends DT_Magic_Url_Base {
         <?php if ( isset( $post['title'] ) ) : ?>
         <div class="grid-x center">
             <div class="cell">
-                <h1 style="margin-bottom:0;">Welcome <?php echo $post['title'] ?></h1>
-                <a style="font-size: .8rem;" href="<?php echo esc_url( site_url() . '/' . $this->root . '/reporter_manager/' ) ?>">Not <?php echo $post['title'] ?>?</a>
+                <h1 style="margin-bottom:0;">Welcome <?php echo esc_html( $post['title'] ) ?></h1>
+                <a style="font-size: .8rem;" href="<?php echo esc_url( site_url() . '/' . $this->root . '/access/' ) ?>">Not <?php echo $post['title'] ?>?</a>
             </div>
         </div>
         <hr>
@@ -454,24 +523,16 @@ class Zume_App_Portal extends DT_Magic_Url_Base {
             <div class="grid-x">
                 <div class="cell top-message"></div>
                 <div class="cell">
-                    <a class="button large expanded" href="<?php echo esc_url( $this->root_url . 'profile' ) ?>"><i class="fi-torso"></i> COMMUNITY PROFILE</a>
+                    <a class="button large expanded intro-profile" data-intro='Hello step one!' href="<?php echo esc_url( $this->root_url . 'profile' ) ?>"><i class="fi-torso"></i> COMMUNITY PROFILE</a>
                 </div>
                 <div class="cell">
-                    <a class="button large expanded" href="<?php echo esc_url( $this->root_url . 'list' ) ?>"><i class="fi-list-thumbnails"></i> EDIT CHURCH LIST</a>
+                    <a class="button large expanded intro-church-list" data-intro='Hello step two!' href="<?php echo esc_url( $this->root_url . 'list' ) ?>"><i class="fi-list-thumbnails"></i> EDIT CHURCH LIST</a>
                 </div>
                 <div class="cell">
-                    <a class="button large expanded" href="<?php echo esc_url( $this->root_url . 'map' ) ?>"><i class="fi-map"></i> MAP</a>
-                </div>
-                <div class="cell">
-                    <a class="button large expanded" onclick="window.open_create_modal()"><i class="fi-plus add-new-green"></i> ADD NEW CHURCH</a>
+                    <a class="button large expanded intro-map" data-intro='Hello step three!' href="<?php echo esc_url( $this->root_url . 'map' ) ?>"><i class="fi-map"></i> MAP</a>
                 </div>
             </div>
         </div>
-        <?php if ( isset( $post['title'] ) ) : ?>
-            <div class="grid-x center">
-
-            </div>
-        <?php endif; ?>
 
         <?php
         $this->create_modal();
@@ -665,7 +726,7 @@ class Zume_App_Portal extends DT_Magic_Url_Base {
                 </div>
                 <div class="cell" id="slider-content">
                     <div class="grid-x grid-padding-x">
-                        <div class="cell medium-6">
+                        <div class="cell">
                             <div class="grid-x">
                                 <div class="cell">
                                     <h3>PROGRESS</h3>
@@ -684,15 +745,6 @@ class Zume_App_Portal extends DT_Magic_Url_Base {
 
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="cell medium-6">
-                            <div class="grid-x">
-                                <div class="cell">
-                                    <h3>ACTIVITY</h3>
-                                </div>
-                                <div class="cell"><hr></div>
-                                <div class="cell temp-spinner" id="activity-content"></div>
                             </div>
                         </div>
                     </div>
@@ -786,6 +838,10 @@ class Zume_App_Portal extends DT_Magic_Url_Base {
         $action = sanitize_text_field( wp_unslash( $params['action'] ) );
 
         switch ( $action ) {
+            case 'intro':
+                return $this->_endpoint_intro( $params );
+
+
             // profile support
             case 'get_profile':
             case 'update_profile_title':
@@ -825,24 +881,29 @@ class Zume_App_Portal extends DT_Magic_Url_Base {
             case 'get_geojson':
                 return $this->_endpoint_geojson( $params );
             case 'self':
-                return Zume_App_Heatmap::get_self( $params['grid_id'], $this->global_div, $this->us_div );
+                return DT_Reporting_App_Heatmap::get_self( $params['grid_id'], $this->global_div, $this->us_div );
             case 'a3':
             case 'a2':
             case 'a1':
             case 'a0':
             case 'world':
-                $list = Zume_App_Heatmap::query_church_grid_totals( $action );
-                return Zume_App_Heatmap::endpoint_get_level( $params['grid_id'], $action, $list, $this->global_div, $this->us_div );
+                $list = DT_Reporting_App_Heatmap::query_church_grid_totals( $action );
+                return DT_Reporting_App_Heatmap::endpoint_get_level( $params['grid_id'], $action, $list, $this->global_div, $this->us_div );
             case 'activity_data':
                 $grid_id = sanitize_text_field( wp_unslash( $params['grid_id'] ) );
                 $offset = sanitize_text_field( wp_unslash( $params['offset'] ) );
-                return Zume_App_Heatmap::query_activity_data( $grid_id, $offset );
+                return DT_Reporting_App_Heatmap::query_activity_data( $grid_id, $offset );
             case 'grid_data':
-                $grid_totals = Zume_App_Heatmap::query_church_grid_totals();
-                return Zume_App_Heatmap::_initial_polygon_value_list( $grid_totals, $this->global_div, $this->us_div );
+                $grid_totals = DT_Reporting_App_Heatmap::query_church_grid_totals();
+                return DT_Reporting_App_Heatmap::_initial_polygon_value_list( $grid_totals, $this->global_div, $this->us_div );
             default:
                 return new WP_Error( __METHOD__, "Missing valid action", [ 'status' => 400 ] );
         }
+    }
+
+    public function _endpoint_intro( $params ) {
+
+        return true;
     }
 
     public function _endpoint_location( $params ) {
@@ -886,9 +947,9 @@ class Zume_App_Portal extends DT_Magic_Url_Base {
                 $result = DT_Posts::update_post( $post_type, $post_id, $fields, false, false );
 
                 if ( 'contacts' === $post_type ) {
-                    Zume_App_Heatmap::clear_practitioner_grid_totals();
+                    DT_Reporting_App_Heatmap::clear_practitioner_grid_totals();
                 } else {
-                    Zume_App_Heatmap::clear_church_grid_totals();
+                    DT_Reporting_App_Heatmap::clear_church_grid_totals();
                 }
 
                 return $result;
@@ -901,9 +962,9 @@ class Zume_App_Portal extends DT_Magic_Url_Base {
                 Location_Grid_Meta::delete_location_grid_meta( $post_id, 'all', 0 );
 
                 if ( 'contacts' === $post_type ) {
-                    Zume_App_Heatmap::clear_practitioner_grid_totals();
+                    DT_Reporting_App_Heatmap::clear_practitioner_grid_totals();
                 } else {
-                    Zume_App_Heatmap::clear_church_grid_totals();
+                    DT_Reporting_App_Heatmap::clear_church_grid_totals();
                 }
 
                 return DT_Posts::get_post( $post_type, $post_id, false, false );
@@ -952,7 +1013,7 @@ class Zume_App_Portal extends DT_Magic_Url_Base {
         $new_post = DT_Posts::create_post( 'groups', $fields, true, false );
         if ( ! is_wp_error( $new_post ) ) {
             // clear cash on church grid totals
-            Zume_App_Heatmap::clear_church_grid_totals();
+            DT_Reporting_App_Heatmap::clear_church_grid_totals();
             $grid_id = 0;
             if ( $new_post['location_grid_meta'] ) {
                 $grid_id = $new_post['location_grid_meta'][0]['grid_id'];
@@ -1106,7 +1167,7 @@ class Zume_App_Portal extends DT_Magic_Url_Base {
                 dt_write_log( 'onItemRemoved' );
                 $deleted_post = Disciple_Tools_Posts::delete_post( 'groups', $params['data']['id'], false );
 
-                Zume_App_Heatmap::clear_church_grid_totals();
+                DT_Reporting_App_Heatmap::clear_church_grid_totals();
 
                 if ( ! is_wp_error( $deleted_post ) ) {
                     return $params['data']['id'];
@@ -1295,11 +1356,11 @@ class Zume_App_Portal extends DT_Magic_Url_Base {
 
     /* map section */
     public function get_grid_totals(){
-        return Zume_App_Heatmap::query_church_grid_totals();
+        return DT_Reporting_App_Heatmap::query_church_grid_totals();
     }
 
     public function get_grid_totals_by_level( $administrative_level ) {
-        return Zume_App_Heatmap::query_church_grid_totals( $administrative_level );
+        return DT_Reporting_App_Heatmap::query_church_grid_totals( $administrative_level );
     }
 
     public function _browser_tab_title( $title ){
@@ -1343,4 +1404,4 @@ class Zume_App_Portal extends DT_Magic_Url_Base {
         <?php
     }
 }
-Zume_App_Portal::instance();
+DT_Reporting_App_Portal::instance();

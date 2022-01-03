@@ -21,25 +21,9 @@ window.get_grid_data = ( action, grid_id) => {
       jQuery('#error').html(e)
     })
 }
-window.get_activity_data = (grid_id) => {
-  let offset = new Date().getTimezoneOffset();
-  return jQuery.ajax({
-    type: "POST",
-    data: JSON.stringify({ action: 'activity_data', parts: jsObject.parts, grid_id: grid_id, offset: offset }),
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: jsObject.root + jsObject.parts.root + '/v1/' + jsObject.parts.type,
-    beforeSend: function (xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', jsObject.nonce )
-    }
-  })
-    .fail(function(e) {
-      jQuery('#error').html(e)
-    })
-}
 
 /* Document Ready && Precache */
-jQuery(document).ready(function($){
+jQuery(document).ready(function(){
 
   clearInterval(window.fiveMinuteTimer)
 
@@ -49,7 +33,7 @@ jQuery(document).ready(function($){
   }
 
   /* set vertical size the form column*/
-  $('#custom-style').empty().append(`
+  jQuery('#custom-style').empty().append(`
         #wrapper {
             height: ${window.innerHeight}px !important;
         }
@@ -74,7 +58,7 @@ jQuery(document).ready(function($){
         }
 
     `)
-  $('#custom-style-portal').empty().append(`
+  jQuery('#custom-style-portal').empty().append(`
         #wrapper {
             height: ${window.innerHeight-60}px !important;
         }
@@ -176,9 +160,9 @@ function load_map() {
   jQuery('#initialize-screen').hide()
 
   // set title
-  $('#panel-type-title').html(jsObject.translation.title)
+  jQuery('#panel-type-title').html(jsObject.translation.title)
 
-  $('.loading-spinner').removeClass('active')
+  jQuery('.loading-spinner').removeClass('active')
 
   let center = [-98, 38.88]
   let maxzoom = jsObject.zoom
@@ -345,25 +329,25 @@ function load_map() {
                 window.previous_hover,
                 {hover: true}
               );
-              $('#title').html(e.features[0].properties.full_name)
-              $('#meter').val(jsObject.grid_data.data[e.features[0].properties.grid_id].percent)
-              $('#saturation-goal').html(jsObject.grid_data.data[e.features[0].properties.grid_id].percent)
-              $('#population').html(jsObject.grid_data.data[e.features[0].properties.grid_id].population)
+              jQuery('#title').html(e.features[0].properties.full_name)
+              jQuery('#meter').val(jsObject.grid_data.data[e.features[0].properties.grid_id].percent)
+              jQuery('#saturation-goal').html(jsObject.grid_data.data[e.features[0].properties.grid_id].percent)
+              jQuery('#population').html(jsObject.grid_data.data[e.features[0].properties.grid_id].population)
 
               //report
-              $('#report-modal-title').val(e.features[0].properties.full_name)
-              $('#report-grid-id').val(e.features[0].properties.grid_id)
+              jQuery('#report-modal-title').val(e.features[0].properties.full_name)
+              jQuery('#report-grid-id').val(e.features[0].properties.grid_id)
 
               let reported = jsObject.grid_data.data[e.features[0].properties.grid_id].reported
-              $('#reported').html(reported)
+              jQuery('#reported').html(reported)
 
               let needed = jsObject.grid_data.data[e.features[0].properties.grid_id].needed
-              $('#needed').html(needed)
+              jQuery('#needed').html(needed)
             }
           });
           map.on('click', i.toString()+'fills', function (e) {
-            $('#modal_tile').html(e.features[0].properties.full_name)
-            $('#modal_population').html(jsObject.grid_data.data[e.features[0].properties.grid_id].population)
+            jQuery('#modal_tile').html(e.features[0].properties.full_name)
+            jQuery('#modal_population').html(jsObject.grid_data.data[e.features[0].properties.grid_id].population)
 
             jQuery('.temp-spinner').html(`<span class="loading-spinner active"></span>`)
 
@@ -392,23 +376,7 @@ function load_map() {
                 load_level_content( data, 'world' )
               })
 
-            let ac = $('#activity-content')
-            ac.html('<span class="loading-spinner active"></span>')
-            window.get_activity_data(e.features[0].properties.grid_id)
-              .done(function(data){
-                ac.empty()
-                if ( data.length < 1 ) {
-                  ac.append(`<div>No Movement Activity</div>`)
-                } else {
-                  $.each(data, function(i,v){
-                    if ( typeof v.message !== 'undefined' ){
-                      ac.append(`<div><div style="float:left;width:180px;"><strong>${v.formatted_time}</strong></div> <span>${v.message}</span></div>`)
-                    }
-                  })
-                }
-              })
-
-            $('#offCanvasNestedPush').foundation('toggle', e);
+            jQuery('#offCanvasNestedPush').foundation('toggle', e);
           });
 
         })
@@ -423,11 +391,11 @@ Support Functions
 ***************************/
 
 function show_details_panel(){
-  $('#details-panel').show()
-  $('#training-start-screen').hide()
+  jQuery('#details-panel').show()
+  jQuery('#training-start-screen').hide()
 }
 function hide_details_panel(){
-  $('#details-panel').hide()
+  jQuery('#details-panel').hide()
 }
 
 

@@ -5,10 +5,10 @@ class Zume_Public_Portal_Fields {
 
     public $page_title = 'Reporting Portal';
     public $page_description = 'This is a portal for reporting church multiplication and community practitioner profile.';
-    public $root = "zume_app";
+    public $root = "reporting_app";
     public $type = 'portal';
     public $post_type = 'contacts';
-    private $meta_key = 'zume_app_portal_magic_key';
+    private $meta_key = 'reporting_app_portal_magic_key';
 
     private static $_instance = null;
     public static function instance() {
@@ -110,8 +110,8 @@ class Zume_Public_Portal_Fields {
                 'icon' => get_template_directory_uri() . '/dt-assets/images/coach.svg',
                 'create-icon' => get_template_directory_uri() . '/dt-assets/images/add-group.svg',
             ];
-            $fields["zume_app_portal_magic_key"] = [
-                'name' => 'zume_app_portal_magic_key',
+            $fields["reporting_app_portal_magic_key"] = [
+                'name' => 'reporting_app_portal_magic_key',
                 'type' => 'hash',
                 'default' => dt_create_unique_key(),
                 "hidden" => true,

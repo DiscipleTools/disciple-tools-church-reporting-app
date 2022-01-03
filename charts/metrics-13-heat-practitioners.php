@@ -21,7 +21,7 @@ class DT_Reporting_App_Metrics_Map_Practitioners extends DT_Metrics_Chart_Base
     }
 
     public function __construct() {
-        $this->magic_link = site_url() . '/zume_app/heatmap_practitioner/';
+        $this->magic_link = site_url() . '/reporting_app/heatmap_practitioner/';
         parent::__construct();
 
         if ( !$this->has_permission() ){
