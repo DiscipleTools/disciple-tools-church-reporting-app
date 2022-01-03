@@ -1,17 +1,17 @@
 <?php
 if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
-if ( strpos( dt_get_url_path(), 'zume_app' ) !== false || dt_is_rest() ){
-    Zume_Public_Reporter_Manager::instance();
+if ( strpos( dt_get_url_path(), 'reporting_app' ) !== false || dt_is_rest() ){
+    DT_Reporting_App_Reporter_Manager::instance();
 }
 
-class Zume_Public_Reporter_Manager extends DT_Magic_Url_Base
+class DT_Reporting_App_Reporter_Manager extends DT_Magic_Url_Base
 {
     public $page_title = 'Reporter Manager';
-    public $root = "zume_app";
-    public $type = 'reporter_manager';
-    public $portal_key = 'zume_app_portal_magic_key';
-    public $portal_url = 'zume_app/portal/';
+    public $root = "reporting_app";
+    public $type = 'access';
+    public $portal_key = 'reporting_app_portal_magic_key';
+    public $portal_url = 'reporting_app/portal/';
     public $type_name = 'Manager';
     public $post_type = 'contacts';
 //    private $meta_key = '';
@@ -48,7 +48,7 @@ class Zume_Public_Reporter_Manager extends DT_Magic_Url_Base
     }
 
     public function dt_magic_url_base_allowed_js( $allowed_js ) {
-        $allowed_js[] = 'reporter';
+        $allowed_js[] = 'access';
         return $allowed_js;
     }
 
@@ -57,7 +57,7 @@ class Zume_Public_Reporter_Manager extends DT_Magic_Url_Base
     }
 
     public function _wp_enqueue_scripts(){
-        wp_enqueue_script( 'reporter', trailingslashit( plugin_dir_url( __FILE__ ) ) . 'reporter.js', [], filemtime( plugin_dir_path( __FILE__ ) .'reporter.js' ), true );
+        wp_enqueue_script( 'access', trailingslashit( plugin_dir_url( __FILE__ ) ) . 'access.js', [], filemtime( plugin_dir_path( __FILE__ ) .'access.js' ), true );
     }
 
     public function add_endpoints() {
@@ -200,7 +200,7 @@ class Zume_Public_Reporter_Manager extends DT_Magic_Url_Base
             "notes" => [
                 "Source" => "This contact was self-registered as a reporter."
             ],
-            'zume_app_portal_magic_key' => $key
+            'reporting_app_portal_magic_key' => $key
         ];
 
         if ( class_exists( 'DT_Ipstack_API' ) && ! empty( DT_Ipstack_API::get_key() ) ) {
@@ -256,6 +256,12 @@ class Zume_Public_Reporter_Manager extends DT_Magic_Url_Base
             return false;
         }
         else {
+            if ( ! isset( $record_post_id['magic_key'] ) ) {
+                $key = dt_create_unique_key();
+                add_post_meta( $record_post_id['post_id'], $this->portal_key, $key );
+                $record_post_id['magic_key'] = $key;
+            }
+
             $link = trailingslashit( site_url() ) . $this->portal_url . $record_post_id['magic_key'];
             $subject = 'Church Reporting Link';
             $message_plain_text =
