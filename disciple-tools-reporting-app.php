@@ -86,14 +86,8 @@ class DT_Reporting_App {
 
         require_once( 'magic/heatmap.php' );
         // polygon heat
-        require_once( 'magic/map-2-network-activities.php' );
         require_once( 'magic/map-3-practitioners.php' );
         require_once( 'magic/map-5-churches.php' );
-        // cluster heat
-        require_once( 'magic/cluster-1-last100.php' );
-        require_once( 'magic/cluster-2-all-time-activity.php' );
-        require_once( 'magic/cluster-3-trainings.php' );
-        require_once( 'magic/cluster-4-streams.php' );
 
         require_once( 'magic/reporter.php' );
         require_once( 'magic/portal.php' );
