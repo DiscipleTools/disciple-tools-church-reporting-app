@@ -4,7 +4,7 @@ if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 class DT_Reporting_App_Metrics_Map_Churches extends DT_Metrics_Chart_Base
 {
     public $base_slug = 'disciple-tools-reporting-app';
-    public $base_title = "Public Maps";
+    public $base_title = "Reporting App";
 
     public $title = 'Churches Saturation';
     public $slug = 'churches-saturation-map';
