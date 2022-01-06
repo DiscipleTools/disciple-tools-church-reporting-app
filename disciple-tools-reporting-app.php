@@ -30,7 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return object|bool
  */
 function dt_reporting_app() {
-    $dt_reporting_app_required_dt_theme_version = '1.0';
+    $dt_reporting_app_required_dt_theme_version = '1.19.2';
     $wp_theme = wp_get_theme();
     $version = $wp_theme->version;
 
@@ -82,7 +82,8 @@ class DT_Reporting_App {
 
         require_once( 'magic/custom-tile.php' );
 
-        require_once( 'charts/charts-loader.php' );
+        require_once( 'charts/mapbox-maps-churches.php' );
+        require_once( 'charts/mapbox-maps-practitioners.php' );
 
         if ( is_admin() ) {
             require_once( 'admin/admin-menu-and-tabs.php' ); // adds starter admin page and section for plugin

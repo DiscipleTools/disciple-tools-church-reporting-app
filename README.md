@@ -2,11 +2,11 @@
 
 # Disciple.Tools - Reporting App
 
-Adds magic link reporting system for contacts to report new churches.
+dds magic link for contacts to self-report on their practitioner status and churches planted (generations and locations).
 
 ## Purpose
 
-To collect movement data from non-user contacts who are practicioners.
+To collect movement data from non-user contacts and users who are movement practitioners.
 
 ## Usage
 
@@ -16,7 +16,6 @@ To collect movement data from non-user contacts who are practicioners.
 - Adds leadership milestones
 - Adds metrics maps to view reporting
 - Adds a self-registration  magic link.
-
 
 ## Requirements
 
