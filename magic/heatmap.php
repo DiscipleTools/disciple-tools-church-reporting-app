@@ -284,6 +284,7 @@ class DT_Reporting_App_Heatmap {
 
         // 44141 records
         global $wpdb;
+        // phpcs:disable
         $results = $wpdb->get_results("
             SELECT *
             FROM (
@@ -425,6 +426,7 @@ class DT_Reporting_App_Heatmap {
               ORDER BY latitude ASC
 
        ", ARRAY_A );
+        // phpcs:enable
 
         $list = [];
         if ( is_array( $results ) ) {

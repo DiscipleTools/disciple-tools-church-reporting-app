@@ -329,7 +329,7 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
                                 steps: [
                                     {
                                         title: 'Edit Church List',
-                                        intro: 'Once a church is added you can arrange it according to generation. <img src="<?php echo plugin_dir_url(__FILE__) ?>/images/nesting-generations.gif" />'
+                                        intro: 'Once a church is added you can arrange it according to generation. <img src="<?php echo esc_url( plugin_dir_url( __FILE__ ) ) ?>/images/nesting-generations.gif" />'
                                     }
                                 ]
                             }).start();
@@ -527,7 +527,7 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
         <div class="grid-x center">
             <div class="cell">
                 <h1 style="margin-bottom:0;">Welcome <?php echo esc_html( $post['title'] ) ?></h1>
-                <a style="font-size: .8rem;" href="<?php echo esc_url( site_url() . '/' . $this->root . '/access/' ) ?>">Not <?php echo $post['title'] ?>?</a>
+                <a style="font-size: .8rem;" href="<?php echo esc_url( site_url() . '/' . $this->root . '/access/' ) ?>">Not <?php echo esc_html( $post['title'] ) ?>?</a>
             </div>
         </div>
         <hr>

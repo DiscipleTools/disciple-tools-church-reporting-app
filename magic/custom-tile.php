@@ -138,7 +138,7 @@ class DT_Reporting_App_Fields {
         if ( $post_type === $this->post_type ){
 
             $fields = DT_Posts::get_post_field_settings( $post_type );
-            if ( current_user_can( 'dt_all_admin_' . $this->post_type  ) ){
+            if ( current_user_can( 'dt_all_admin_' . $this->post_type ) ){
                 $counts = self::get_all_status_types();
                 $status_counts = [];
                 $total_all = 0;
@@ -212,7 +212,7 @@ class DT_Reporting_App_Fields {
          * @todo adjust query to return count for update needed
          */
         global $wpdb;
-        $post_type = $this->post_type ;
+        $post_type = $this->post_type;
         $current_user = get_current_user_id();
 
         $results = $wpdb->get_results( $wpdb->prepare( "
@@ -256,7 +256,7 @@ class DT_Reporting_App_Fields {
                 LEFT JOIN $wpdb->postmeta assigned_to ON ( assigned_to.post_id = pm.post_id AND assigned_to.meta_key = 'assigned_to' && assigned_to.meta_value = %s )
                 WHERE ( shares.user_id IS NOT NULL OR assigned_to.meta_value IS NOT NULL )
                 GROUP BY status.meta_value, pm.meta_value
-            ", $this->post_type , get_current_user_id(), 'user-' . get_current_user_id() ), ARRAY_A);
+            ", $this->post_type, get_current_user_id(), 'user-' . get_current_user_id() ), ARRAY_A);
         }
 //        dt_write_log(__METHOD__);
 //        dt_write_log($results);
