@@ -1,7 +1,7 @@
 <?php
 if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
-class Zume_Public_Portal_Fields {
+class DT_Reporting_App_Fields {
 
     public $page_title = 'Reporting Portal';
     public $page_description = 'This is a portal for reporting church multiplication and community practitioner profile.';
@@ -264,4 +264,4 @@ class Zume_Public_Portal_Fields {
         return $results;
     }
 }
-Zume_Public_Portal_Fields::instance();
+DT_Reporting_App_Fields::instance();
