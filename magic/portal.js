@@ -1080,7 +1080,7 @@ window.load_basic_map = () => {
     center: [-98, 38.88],
     minZoom: 1,
     maxZoom: 15,
-    zoom: 1
+    zoom: 5
   });
 
   // disable map rotation using right click + drag

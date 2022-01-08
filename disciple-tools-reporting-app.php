@@ -10,7 +10,7 @@
  * GitHub Plugin URI: https://github.com/DiscipleTools/disciple-tools-reporting-app
  * Requires at least: 4.7.0
  * (Requires 4.7+ because of the integration of the REST API at 4.7 and the security requirements of this milestone version.)
- * Tested up to: 5.6
+ * Tested up to: 5.8
  *
  * @package Disciple_Tools
  * @link    https://github.com/DiscipleTools
@@ -56,7 +56,7 @@ function dt_reporting_app() {
     return DT_Reporting_App::instance();
 
 }
-add_action( 'dt_network_dashboard_loaded', 'dt_reporting_app', 20 ); // hooks the network dashboard to load first
+add_action( 'after_setup_theme', 'dt_reporting_app', 20 ); // hooks the network dashboard to load first
 
 /**
  * Singleton class for setting up the plugin.
