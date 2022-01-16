@@ -5,7 +5,7 @@
  * Description: Adds magic link reporting system for contacts to report new churches.
  * Text Domain: disciple-tools-reporting-app
  * Domain Path: /languages
- * Version:  1.2
+ * Version:  1.3
  * Author URI: https://github.com/ZumeProject
  * GitHub Plugin URI: https://github.com/DiscipleTools/disciple-tools-reporting-app
  * Requires at least: 4.7.0
