@@ -1000,9 +1000,15 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
             $params['data']['start_date'] = gmdate( 'Y-m-d' );
         }
 
+        $assigned_to = 0;
+        $corresponds_to_user = get_post_meta( $post_id, 'corresponds_to_user', true );
+        if ( $corresponds_to_user && 'user' === get_post_meta( $post_id, 'type', true ) ) {
+            $assigned_to = $corresponds_to_user;
+        }
+
         $fields = [
             "title" => $params["data"]['name'],
-            "assigned_to" => 0,
+            "assigned_to" => $assigned_to,
             "group_status" => "active",
             "group_type" => "church",
             "church_reporter" => [
