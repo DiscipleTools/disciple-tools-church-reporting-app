@@ -138,71 +138,73 @@ class DT_Reporting_App_Fields {
         if ( $post_type === $this->post_type ){
 
             $fields = DT_Posts::get_post_field_settings( $post_type );
-            if ( current_user_can( 'dt_all_admin_' . $this->post_type ) ){
-                $counts = self::get_all_status_types();
-                $status_counts = [];
-                $total_all = 0;
-                foreach ( $counts as $count ){
-                    $total_all += $count["count"];
-                    dt_increment( $status_counts[$count["status"]], $count["count"] );
-                }
-                $filters["tabs"][] = [
-                    "key" => "all",
-                    "label" => __( "Leadership Milestones", 'disciple-tools' ),
-                    "order" => 20
-                ];
-                foreach ( $fields["leader_milestones"]["default"] as $status_key => $status_value ) {
-                    if ( isset( $status_counts[$status_key] ) ){
-                        $filters["filters"][] = [
-                            "ID" => 'all_' . $status_key,
-                            "tab" => 'all',
-                            "name" => $status_value["label"],
-                            "query" => [
-                                'leader_milestones' => [ $status_key ],
-                                'sort' => '-post_date'
-                            ],
-                            "count" => $status_counts[$status_key]
-                        ];
+            if ( isset( $fields["leader_milestones"] ) ) {
+                if ( current_user_can( 'dt_all_admin_' . $this->post_type ) ){
+                    $counts = self::get_all_status_types();
+                    $status_counts = [];
+                    $total_all = 0;
+                    foreach ( $counts as $count ){
+                        $total_all += $count["count"];
+                        dt_increment( $status_counts[$count["status"]], $count["count"] );
+                    }
+                    $filters["tabs"][] = [
+                        "key" => "all",
+                        "label" => __( "Leadership Milestones", 'disciple-tools' ),
+                        "order" => 20
+                    ];
+                    foreach ( $fields["leader_milestones"]["default"] as $status_key => $status_value ) {
+                        if ( isset( $status_counts[$status_key] ) ){
+                            $filters["filters"][] = [
+                                "ID" => 'all_' . $status_key,
+                                "tab" => 'all',
+                                "name" => $status_value["label"],
+                                "query" => [
+                                    'leader_milestones' => [ $status_key ],
+                                    'sort' => '-post_date'
+                                ],
+                                "count" => $status_counts[$status_key]
+                            ];
+                        }
                     }
                 }
-            }
-            else {
-                $counts = self::get_my_status();
-                /**
-                 * Setup my filters
-                 */
-                $active_counts = [];
-                $status_counts = [];
-                $total_my = 0;
-                foreach ( $counts as $count ){
-                    $total_my += $count["count"];
-                    dt_increment( $status_counts[$count["status"]], $count["count"] );
-                    if ( $count["status"] === "active" ){
-                        dt_increment( $active_counts[$count["status"]], $count["count"] );
+                else {
+                    $counts = self::get_my_status();
+                    /**
+                     * Setup my filters
+                     */
+                    $active_counts = [];
+                    $status_counts = [];
+                    $total_my = 0;
+                    foreach ( $counts as $count ){
+                        $total_my += $count["count"];
+                        dt_increment( $status_counts[$count["status"]], $count["count"] );
+                        if ( $count["status"] === "active" ){
+                            dt_increment( $active_counts[$count["status"]], $count["count"] );
+                        }
                     }
-                }
 
-                $filters["tabs"][] = [
-                    "key" => "assigned_to_me",
-                    "label" => __( "My Leader Milestones", 'disciple-tools' ),
-                    "order" => 20
-                ];
-                foreach ( $fields["leader_milestones"]["default"] as $status_key => $status_value ) {
-                    if ( isset( $status_counts[$status_key] ) ){
-                        $filters["filters"][] = [
-                            "ID" => 'my_' . $status_key,
-                            "tab" => 'assigned_to_me',
-                            "name" => $status_value["label"],
-                            "query" => [
-                                'assigned_to' => [ 'me' ],
-                                'leader_milestones' => [ $status_key ],
-                                'sort' => '-post_date'
-                            ],
-                            "count" => $status_counts[$status_key]
-                        ];
+                    $filters["tabs"][] = [
+                        "key" => "assigned_to_me",
+                        "label" => __( "My Leader Milestones", 'disciple-tools' ),
+                        "order" => 20
+                    ];
+                    foreach ( $fields["leader_milestones"]["default"] as $status_key => $status_value ) {
+                        if ( isset( $status_counts[$status_key] ) ){
+                            $filters["filters"][] = [
+                                "ID" => 'my_' . $status_key,
+                                "tab" => 'assigned_to_me',
+                                "name" => $status_value["label"],
+                                "query" => [
+                                    'assigned_to' => [ 'me' ],
+                                    'leader_milestones' => [ $status_key ],
+                                    'sort' => '-post_date'
+                                ],
+                                "count" => $status_counts[$status_key]
+                            ];
+                        }
                     }
-                }
-            }
+                } // if has permissions
+            } // if leadership_milestones exists
         }
         return $filters;
     }
