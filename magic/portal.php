@@ -359,7 +359,7 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
         }
         $post = $this->post;
         $translation = [
-            'add' => __( 'Add Magic', 'disciple_tools' ),
+            'add' => __( 'Add Magic', 'disciple-tools-reporting-app' ),
         ];
 
         if ( 'map' === $this->parts['action'] ) {
@@ -1384,7 +1384,7 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
     }
 
     public function _browser_tab_title( $title ){
-        return __( "Zúme Churches Map", 'disciple_tools' );
+        return __( "Zúme Churches Map", 'disciple-tools-reporting-app'  );
     }
 
     /**

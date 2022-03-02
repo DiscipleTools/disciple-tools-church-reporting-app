@@ -134,7 +134,7 @@ class DT_Reporting_App_Reporter_Manager extends DT_Magic_Url_Base
                 'parts' => $this->parts,
                 'post_type' => $this->post_type,
                 'trans' => [
-                    'add' => __( 'Zume', 'disciple_tools' ),
+                    'add' => __( 'Zume', 'disciple-tools-reporting-app'  ),
                 ],
             ]) ?>][0]
         </script>
