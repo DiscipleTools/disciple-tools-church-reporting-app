@@ -27,7 +27,8 @@ class DT_Metrics_Reporting_App_Maps extends DT_Metrics_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-
+        $this->base_title = __('Reporting App', 'disciple_tools' );
+        $this->title = __('Practitioner Saturation', 'disciple_tools' );
 
         $url_path = dt_get_url_path();
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {

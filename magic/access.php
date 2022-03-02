@@ -156,8 +156,8 @@ class DT_Reporting_App_Reporter_Manager extends DT_Magic_Url_Base
         $record_post_id = $this->_search_for_email( $data['email'] );
         if ( $record_post_id ) {
             $link = trailingslashit( site_url() ) . $this->portal_url . $record_post_id['magic_key'];
-            $subject = 'Personal Reporting Link';
-            $message_plain_text = 'Follow this link to access your personal portal
+            $subject = __( 'Personal Reporting Link' );
+            $message_plain_text = __( 'Follow this link to access your personal portal' ) . '
 
 '           . $link;
             dt_send_email( $data['email'], $subject, $message_plain_text );
@@ -227,8 +227,8 @@ class DT_Reporting_App_Reporter_Manager extends DT_Magic_Url_Base
         }
 
         // email contact new magic link
-        $subject = 'Church Reporting Link';
-        $message_plain_text = 'Follow this link to access your reporting portal. Please, complete your remaining community profile.
+        $subject = __( 'Church Reporting Link' );
+        $message_plain_text = __( 'Follow this link to access your reporting portal. Please, complete your remaining community profile.') . '
 
 '      . $link;
         dt_send_email( $data['email'], $subject, $message_plain_text );
@@ -263,9 +263,9 @@ class DT_Reporting_App_Reporter_Manager extends DT_Magic_Url_Base
             }
 
             $link = trailingslashit( site_url() ) . $this->portal_url . $record_post_id['magic_key'];
-            $subject = 'Church Reporting Link';
+            $subject = __( 'Church Reporting Link' );
             $message_plain_text =
-                'Follow this link to access your reporting portal. Please, complete your remaining community profile.
+                __( 'Follow this link to access your reporting portal. Please, complete your remaining community profile.') . '
 
 ' . $link;
             dt_send_email( $email, $subject, $message_plain_text );

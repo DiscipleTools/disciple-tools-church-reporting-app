@@ -15,16 +15,17 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
     public $show_bulk_send = true;
     public $show_app_tile = true;
     public $root_url;
+    private $meta_key;
     public $post_id;
     public $post;
     public $post_type = 'contacts';
-//    private $meta_key = '';
     public $type_actions = [
         '' => "Home",
         'profile' => "Profile",
         'list' => "List View",
         'map' => "Map View",
         'goals_map' => "Goals Map View",
+        'setup' => "Setup View",
     ];
     public $us_div = 2500; // this is 2 for every 5000
     public $global_div = 25000; // this equals 2 for every 50000
@@ -41,6 +42,8 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
         $this->meta_key = $this->root . '_' . $this->type . '_magic_key';
         parent::__construct();
 
+        $this->page_title = __( 'Reporting Portal' );
+
         add_action( 'rest_api_init', [ $this, 'add_endpoints' ] );
         add_filter( 'dt_settings_apps_list', [ $this, 'dt_settings_apps_list' ], 10, 1 );
 
@@ -51,8 +54,9 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
         if ( strpos( $url, $this->root . '/' . $this->type ) === false ) {
             return;
         }
+
         if ( empty( $this->parts['public_key'] ) ) {
-            wp_redirect( '/reporting_app/access' );
+            wp_redirect( site_url() . '/reporting_app/access' );
             return;
         }
         /**
@@ -61,8 +65,6 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
         if ( !$this->check_parts_match() ){
             return;
         }
-
-
 
         // load if valid url
         $this->root_url = site_url() . '/' . $this->parts['root'] . '/' . $this->parts['type'] . '/' . $this->parts['public_key'] . '/';
@@ -78,6 +80,9 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
         }
         else if ( 'profile' === $this->parts['action'] ) {
             add_action( 'dt_blank_body', [ $this, 'profile_body' ] );
+        }
+        else if ( 'setup' === $this->parts['action'] ) {
+            add_action( 'dt_blank_body', [ $this, 'setup_body' ] );
         }
         else if ( '' === $this->parts['action'] ) {
             add_action( 'dt_blank_body', [ $this, 'home_body' ] );
@@ -286,28 +291,28 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
                             introJs().setOptions({
                                 steps: [
                                     {
-                                        title: 'Welcome',
-                                        intro: 'Thank you for reporting your movement activity for our community!<br><br>This link is a permanent link for you. You can add it to your homescreen on your phone or save it as a bookmark.'
+                                        title: '<?php echo esc_html__( 'Welcome' ) ?>',
+                                        intro: '<?php echo esc_html__( 'Thank you for reporting your movement activity for our community!<br><br>This link is a permanent link for you. You can add it to your homescreen on your phone or save it as a bookmark.' ) ?>'
                                     },
                                     {
                                         element: document.querySelector('.float'),
-                                        intro: 'Create new churches at any time.'
+                                        intro: '<?php echo esc_html__( 'Create new churches at any time.' ) ?>'
                                     },
                                     {
                                         element: document.querySelector('.intro-profile'),
-                                        intro: 'Setup your community profile so we know where your are pushing for the kingdom and how to connect other practitioners with you.'
+                                        intro: '<?php echo esc_html__( 'Setup your community profile so we know where your are pushing for the kingdom and how to connect other practitioners with you.' ) ?>'
                                     },
                                     {
                                         element: document.querySelector('.intro-church-list'),
-                                        intro: 'Edit your simple churches and order them according to their generations.'
+                                        intro: '<?php echo esc_html__( 'Edit your simple churches and order them according to their generations.' ) ?>'
                                     },
                                     {
                                         element: document.querySelector('.intro-map'),
-                                        intro: 'View your simple churches on your personal map and view them with the goals map for the entire community.'
+                                        intro: '<?php echo esc_html__( 'View your simple churches on your personal map and view them with the goals map for the entire community.' ) ?>'
                                     },
                                     {
                                         element: document.querySelector('#menu-icon'),
-                                        intro: 'Use the slide menu to navigate through the portal.'
+                                        intro: '<?php echo esc_html__( 'Use the slide menu to navigate through the portal.' ) ?>'
                                     }
                                 ]
                             }).start();
@@ -328,8 +333,8 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
                             introJs().setOptions({
                                 steps: [
                                     {
-                                        title: 'Edit Church List',
-                                        intro: 'Once a church is added you can arrange it according to generation. <img src="<?php echo esc_url( plugin_dir_url( __FILE__ ) ) ?>/images/nesting-generations.gif" />'
+                                        title: '<?php echo esc_html__( 'Edit Church List' ) ?>',
+                                        intro: '<?php echo esc_html__( 'Once a church is added you can arrange it according to generation.' ) ?> <img src="<?php echo esc_url( plugin_dir_url( __FILE__ ) ) ?>/images/nesting-generations.gif" />'
                                     }
                                 ]
                             }).start();
@@ -516,7 +521,7 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
         <div class="grid-x">
             <div class="cell padding-1" >
                 <button type="button" style="margin:1em .5em 1em; color: black;" id="menu-icon" data-open="offCanvasLeft"><i class="fi-list"></i></button>
-                <span style="font-size:1.5rem;font-weight: bold;">Home</span>
+                <span style="font-size:1.5rem;font-weight: bold;"><?php echo esc_html__( 'Home' ) ?></span>
             </div>
         </div>
 
@@ -526,7 +531,7 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
         <?php if ( isset( $post['title'] ) ) : ?>
         <div class="grid-x center">
             <div class="cell">
-                <h1 style="margin-bottom:0;">Welcome <?php echo esc_html( $post['title'] ) ?></h1>
+                <h1 style="margin-bottom:0;"><?php echo esc_html__( 'Welcome' ) ?> <?php echo esc_html( $post['title'] ) ?></h1>
                 <a style="font-size: .8rem;" href="<?php echo esc_url( site_url() . '/' . $this->root . '/access/' ) ?>">Not <?php echo esc_html( $post['title'] ) ?>?</a>
             </div>
         </div>
@@ -537,13 +542,13 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
             <div class="grid-x">
                 <div class="cell top-message"></div>
                 <div class="cell">
-                    <a class="button large expanded intro-profile" data-intro='Hello step one!' href="<?php echo esc_url( $this->root_url . 'profile' ) ?>"><i class="fi-torso"></i> COMMUNITY PROFILE</a>
+                    <a class="button large expanded intro-profile" data-intro='Hello step one!' href="<?php echo esc_url( $this->root_url . 'profile' ) ?>"><i class="fi-torso"></i> <?php echo esc_html__( 'COMMUNITY PROFILE' ) ?></a>
                 </div>
                 <div class="cell">
-                    <a class="button large expanded intro-church-list" data-intro='Hello step two!' href="<?php echo esc_url( $this->root_url . 'list' ) ?>"><i class="fi-list-thumbnails"></i> EDIT CHURCH LIST</a>
+                    <a class="button large expanded intro-church-list" data-intro='Hello step two!' href="<?php echo esc_url( $this->root_url . 'list' ) ?>"><i class="fi-list-thumbnails"></i> <?php echo esc_html__( 'EDIT CHURCH LIST' ) ?></a>
                 </div>
                 <div class="cell">
-                    <a class="button large expanded intro-map" data-intro='Hello step three!' href="<?php echo esc_url( $this->root_url . 'map' ) ?>"><i class="fi-map"></i> MAP</a>
+                    <a class="button large expanded intro-map" data-intro='Hello step three!' href="<?php echo esc_url( $this->root_url . 'map' ) ?>"><i class="fi-map"></i> <?php echo esc_html__( 'MAP' ) ?></a>
                 </div>
             </div>
         </div>
@@ -559,7 +564,26 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
             <div class="cell padding-1" >
                 <button type="button" style="margin:1em .5em 1em;" id="menu-icon" data-open="offCanvasLeft"><i class="fi-list"></i></button>
                 <a style="margin:1em 1em 1em 0; color:black;" href="<?php echo esc_url( $this->root_url ) ?>"><i class="fi-home" style="font-size:2em;"></i></a>
-                <span style="font-size:1.5rem;font-weight: bold;">Community Profile</span>
+                <span style="font-size:1.5rem;font-weight: bold;"><?php echo esc_html__( 'Community Profile' ) ?></span>
+                <span class="loading-spinner active"></span>
+            </div>
+        </div>
+
+        <!-- nav -->
+        <?php $this->nav(); ?>
+
+        <div id="wrapper"></div>
+        <?php
+    }
+
+    public function setup_body(){
+        ?>
+        <!-- title -->
+        <div class="grid-x">
+            <div class="cell padding-1" >
+                <button type="button" style="margin:1em .5em 1em;" id="menu-icon" data-open="offCanvasLeft"><i class="fi-list"></i></button>
+                <a style="margin:1em 1em 1em 0; color:black;" href="<?php echo esc_url( $this->root_url ) ?>"><i class="fi-home" style="font-size:2em;"></i></a>
+                <span style="font-size:1.5rem;font-weight: bold;"><?php echo esc_html__( 'Reporting Portal Setup' ) ?></span>
                 <span class="loading-spinner active"></span>
             </div>
         </div>
@@ -578,7 +602,7 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
             <div class="cell padding-1" >
                 <button type="button" style="margin:1em .5em 1em;" id="menu-icon" data-open="offCanvasLeft"><i class="fi-list"></i></button>
                 <a style="margin:1em 1em 1em 0; color:black;" href="<?php echo esc_url( $this->root_url ) ?>"><i class="fi-home" style="font-size:2em;"></i></a>
-                <span style="font-size:1.5rem;font-weight: bold;">Edit Church List</span>
+                <span style="font-size:1.5rem;font-weight: bold;"><?php echo esc_html__( 'Edit Church List' ) ?></span>
                 <span class="loading-spinner active"></span>
             </div>
         </div>
@@ -602,7 +626,7 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
             <div class="cell padding-1" >
                 <button type="button" style="margin:1em .5em 1em;" id="menu-icon" data-open="offCanvasLeft"><i class="fi-list"></i></button>
                 <a style="margin:1em 1em 1em 0; color:black;" href="<?php echo esc_url( $this->root_url ) ?>"><i class="fi-home" style="font-size:2em;"></i></a>
-                <span style="font-size:1.5rem;font-weight: bold;">Map</span> <a class="button small hollow" style="margin:0 0 5px 10px;padding:.5em;" href="<?php echo esc_url( $this->root_url ) ?>/goals_map">Show Goals</a>
+                <span style="font-size:1.5rem;font-weight: bold;"><?php echo esc_html__( 'Map' ) ?></span> <a class="button small hollow" style="margin:0 0 5px 10px;padding:.5em;" href="<?php echo esc_url( $this->root_url ) ?>/goals_map"><?php echo esc_html__( 'Show Goals' ) ?></a>
 
             </div>
         </div>
@@ -622,14 +646,11 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
             <div class="medium-4 large-3 cell">
                 <div class="grid-x grid-padding-x">
                     <div class="cell center">
-                        <h2 style="padding-top:.7rem; font-weight: bold;">Church List</h2>
+                        <h2 style="padding-top:.7rem; font-weight: bold;"><?php echo esc_html__( 'Church List' ) ?></h2>
                     </div>
                     <div class="cell"><div class="loading-spinner active"></div></div>
                 </div>
-                <div id="church-list-wrapper">
-
-                </div>
-
+                <div id="church-list-wrapper"></div>
             </div>
         </div>
 
@@ -645,7 +666,7 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
             <div class="cell padding-1" >
                 <button type="button" style="margin:1em .5em 1em;" id="menu-icon" data-open="offCanvasLeft"><i class="fi-list" style="font-size:2em;"></i></button>
                 <a style="margin:1em 1em 1em 0; color:black;" href="<?php echo esc_url( $this->root_url ) ?>"><i class="fi-home" style="font-size:2em;"></i></a>
-                <span style="font-size:1.5rem;font-weight: bold;">Map</span> <a class="button small" style="margin:0 0 5px 10px;padding:.5em;" href="<?php echo esc_url( $this->root_url ) ?>/map">Hide Goals</a>
+                <span style="font-size:1.5rem;font-weight: bold;"><?php echo esc_html__( 'Map' ) ?></span> <a class="button small" style="margin:0 0 5px 10px;padding:.5em;" href="<?php echo esc_url( $this->root_url ) ?>/map"><?php echo esc_html__( 'Hide Goals' ) ?></a>
 
             </div>
         </div>
@@ -668,17 +689,17 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
         <div id="initialize-screen">
             <div id="initialize-spinner-wrapper" class="center">
                 <progress class="success initialize-progress" max="46" value="0"></progress><br>
-                Loading the planet ...<br>
-                <span id="initialize-people" style="display:none;">Locating world population...</span><br>
-                <span id="initialize-activity" style="display:none;">Calculating movement activity...</span><br>
-                <span id="initialize-coffee" style="display:none;">Shamelessly brewing coffee...</span><br>
-                <span id="initialize-dothis" style="display:none;">Let's do this...</span><br>
+                <?php echo esc_html__( 'Loading the planet' ) ?> ...<br>
+                <span id="initialize-people" style="display:none;"><?php echo esc_html__( "Locating world population" ) ?>...</span><br>
+                <span id="initialize-activity" style="display:none;"><?php echo esc_html__( "Calculating movement activity" ) ?>...</span><br>
+                <span id="initialize-coffee" style="display:none;"><?php echo esc_html__( "Shamelessly brewing coffee" ) ?>...</span><br>
+                <span id="initialize-dothis" style="display:none;"><?php echo esc_html__( "Let's do this" ) ?>...</span><br>
             </div>
         </div>
 
         <div class="large reveal" id="welcome-modal" data-v-offset="10px" data-reveal>
             <div id="welcome-content" data-close></div>
-            <div class="center"><button class="button" id="welcome-close-button" data-close>Get Started!</button></div>
+            <div class="center"><button class="button" id="welcome-close-button" data-close><?php echo esc_html__( "Get Started!" ) ?></button></div>
         </div>
 
         <div class="grid-x">
@@ -694,23 +715,23 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
                     <div class="grid-x grid-padding-x" >
                         <div class="cell">
                             <h1 id="title"></h1>
-                            <h3>Population: <span id="population">0</span></h3>
+                            <h3><?php echo esc_html__( "Get Started!" ) ?>Population: <span id="population">0</span></h3>
                             <hr>
                         </div>
                         <div class="cell">
                             <h2 id="panel-type-title">Churches</h2>
                         </div>
                         <div class="cell" id="needed-row">
-                            <h3>Needed: <span id="needed">0</span></h3>
+                            <h3><?php echo esc_html__( "Get Started!" ) ?>Needed: <span id="needed">0</span></h3>
                         </div>
                         <div class="cell">
-                            <h3>Reported: <span id="reported">0</span></h3>
+                            <h3><?php echo esc_html__( "Get Started!" ) ?>Reported: <span id="reported">0</span></h3>
                         </div>
                         <div class="cell">
                             <hr>
                         </div>
                         <div class="cell" id="goal-row">
-                            <h2>Goal: <span id="saturation-goal">0</span>%</h2>
+                            <h2><?php echo esc_html__( "Goal:" ) ?> <span id="saturation-goal">0</span>%</h2>
                             <meter id="meter" class="meter" value="30" min="0" low="33" high="66" optimum="100" max="100"></meter>
                         </div>
                     </div>
