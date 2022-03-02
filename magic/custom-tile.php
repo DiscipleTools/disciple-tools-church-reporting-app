@@ -100,8 +100,8 @@ class DT_Reporting_App_Fields {
                 'icon' => get_template_directory_uri() . "/dt-assets/images/sign-post.svg?v=2",
             ];
             $fields["church_reporter"] = [
-                "name" => __( 'Reporter for Churches', 'disciple-tools' ),
-                'description' => _x( 'The person who is reporting on this church.', 'Optional Documentation', 'disciple-tools-streams' ),
+                "name" => __( 'Reporter for Churches', 'disciple-tools-reporting-app'  ),
+                'description' => _x( 'The person who is reporting on this church.', 'Optional Documentation', 'disciple-tools-reporting-app'  ),
                 "type" => "connection",
                 "post_type" => "groups",
                 "p2p_direction" => "from",
@@ -120,8 +120,8 @@ class DT_Reporting_App_Fields {
         }
         if ( $post_type === "groups" ) {
             $fields["church_reporter"] = [
-                "name" => __( 'Church Reporter', 'disciple-tools' ),
-                'description' => _x( 'The person who is reporting on this church.', 'Optional Documentation', 'disciple-tools-streams' ),
+                "name" => __( 'Church Reporter', 'disciple-tools-reporting-app'  ),
+                'description' => _x( 'The person who is reporting on this church.', 'Optional Documentation', 'disciple-tools-reporting-app'  ),
                 "type" => "connection",
                 "post_type" => "contacts",
                 "p2p_direction" => "to",
@@ -149,7 +149,7 @@ class DT_Reporting_App_Fields {
                     }
                     $filters["tabs"][] = [
                         "key" => "all",
-                        "label" => __( "Leadership Milestones", 'disciple-tools' ),
+                        "label" => __( "Leadership Milestones", 'disciple-tools-reporting-app' ),
                         "order" => 20
                     ];
                     foreach ( $fields["leader_milestones"]["default"] as $status_key => $status_value ) {
@@ -185,7 +185,7 @@ class DT_Reporting_App_Fields {
 
                     $filters["tabs"][] = [
                         "key" => "assigned_to_me",
-                        "label" => __( "My Leader Milestones", 'disciple-tools' ),
+                        "label" => __( "My Leader Milestones", 'disciple-tools-reporting-app' ),
                         "order" => 20
                     ];
                     foreach ( $fields["leader_milestones"]["default"] as $status_key => $status_value ) {
