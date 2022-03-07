@@ -82,8 +82,8 @@ class DT_Reporting_App {
 
         require_once( 'magic/custom-tile.php' );
 
-        require_once( 'charts/mapbox-maps-churches.php' );
-        require_once( 'charts/mapbox-maps-practitioners.php' );
+//        require_once( 'charts/mapbox-maps-churches.php' );
+//        require_once( 'charts/mapbox-maps-practitioners.php' );
 
         if ( is_admin() ) {
             require_once( 'admin/admin-menu-and-tabs.php' ); // adds starter admin page and section for plugin
