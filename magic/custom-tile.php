@@ -79,7 +79,7 @@ class DT_Reporting_App_Fields {
                     ],
                 ],
                 "tile" => "faith",
-                "in_create_form" => true,
+                "in_create_form" => false,
                 'icon' => get_template_directory_uri() . "/dt-assets/images/sign-post.svg?v=2",
             ];
 
