@@ -81,6 +81,7 @@ class DT_Reporting_App_Fields {
                 "tile" => "faith",
                 "in_create_form" => false,
                 'icon' => get_template_directory_uri() . "/dt-assets/images/sign-post.svg?v=2",
+                "hidden" => true,
             ];
 
             $fields["leader_community_restrictions"] = [
@@ -100,8 +101,9 @@ class DT_Reporting_App_Fields {
                     ]
                 ],
                 "tile" => "details",
-                "in_create_form" => true,
+                "in_create_form" => false,
                 'icon' => get_template_directory_uri() . "/dt-assets/images/sign-post.svg?v=2",
+                "hidden" => true,
             ];
             $fields["church_reporter"] = [
                 "name" => __( 'Reporter for Churches', 'disciple-tools-reporting-app'  ),
