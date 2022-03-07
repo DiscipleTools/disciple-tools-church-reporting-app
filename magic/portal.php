@@ -1405,7 +1405,7 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
     }
 
     public function _browser_tab_title( $title ){
-        return __( "Zúme Churches Map", 'disciple-tools-reporting-app'  );
+        return __( "Zúme Churches Map", 'disciple-tools-reporting-app' );
     }
 
     /**

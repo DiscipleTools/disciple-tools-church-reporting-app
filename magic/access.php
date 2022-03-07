@@ -134,7 +134,7 @@ class DT_Reporting_App_Reporter_Manager extends DT_Magic_Url_Base
                 'parts' => $this->parts,
                 'post_type' => $this->post_type,
                 'trans' => [
-                    'add' => __( 'Zume', 'disciple-tools-reporting-app'  ),
+                    'add' => __( 'Zume', 'disciple-tools-reporting-app' ),
                 ],
             ]) ?>][0]
         </script>
@@ -228,7 +228,7 @@ class DT_Reporting_App_Reporter_Manager extends DT_Magic_Url_Base
 
         // email contact new magic link
         $subject = __( 'Church Reporting Link' );
-        $message_plain_text = __( 'Follow this link to access your reporting portal. Please, complete your remaining community profile.') . '
+        $message_plain_text = __( 'Follow this link to access your reporting portal. Please, complete your remaining community profile.' ) . '
 
 '      . $link;
         dt_send_email( $data['email'], $subject, $message_plain_text );
@@ -265,7 +265,7 @@ class DT_Reporting_App_Reporter_Manager extends DT_Magic_Url_Base
             $link = trailingslashit( site_url() ) . $this->portal_url . $record_post_id['magic_key'];
             $subject = __( 'Church Reporting Link' );
             $message_plain_text =
-                __( 'Follow this link to access your reporting portal. Please, complete your remaining community profile.') . '
+                __( 'Follow this link to access your reporting portal. Please, complete your remaining community profile.' ) . '
 
 ' . $link;
             dt_send_email( $email, $subject, $message_plain_text );
