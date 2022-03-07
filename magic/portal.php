@@ -292,7 +292,7 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
                                 steps: [
                                     {
                                         title: '<?php echo esc_html__( 'Welcome' ) ?>',
-                                        intro: '<?php echo esc_html__( 'Thank you for reporting your movement activity for our community!<br><br>This link is a permanent link for you. You can add it to your homescreen on your phone or save it as a bookmark.' ) ?>'
+                                        intro: '<?php echo esc_html__( 'Thank you for reporting your movement activity for our community!' ) ?><br><br><?php echo esc_html__( 'This link is a permanent link for you. You can add it to your homescreen on your phone or save it as a bookmark.' ) ?>'
                                     },
                                     {
                                         element: document.querySelector('.float'),
