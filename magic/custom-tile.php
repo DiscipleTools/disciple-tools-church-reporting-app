@@ -20,8 +20,12 @@ class DT_Reporting_App_Fields {
 
     public function __construct() {
         add_filter( 'dt_custom_fields_settings', [ $this, 'dt_custom_fields_settings' ], 50, 2 );
-        add_filter( "dt_user_list_filters", [ $this, "dt_user_list_filters" ], 10, 2 );
+//        add_filter( "dt_user_list_filters", [ $this, "dt_user_list_filters" ], 10, 2 );
+
+
     }
+
+
 
     public function dt_custom_fields_settings( array $fields, string $post_type = "" ) {
         //check if we are dealing with a contact

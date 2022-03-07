@@ -46,6 +46,8 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
 
         add_action( 'rest_api_init', [ $this, 'add_endpoints' ] );
         add_filter( 'dt_settings_apps_list', [ $this, 'dt_settings_apps_list' ], 10, 1 );
+        add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 99, 2 );
+
 
         /**
          * tests if other URL
@@ -95,16 +97,20 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
         add_filter( 'dt_magic_url_base_allowed_js', [ $this, 'dt_magic_url_base_allowed_js' ], 10, 1 );
         add_action( 'wp_enqueue_scripts', [ $this, '_wp_enqueue_scripts' ], 99 );
     }
+    public function dt_details_additional_section( $section, $post_type ){
+        // @todo removed to hide app
+    }
 
 
     public function dt_settings_apps_list( $apps_list ) {
-        $apps_list[ $this->meta_key ] = [
-            'key'              => $this->meta_key,
-            'url_base'         => $this->root . '/' . $this->type,
-            'label'            => $this->page_title,
-            'description'      => $this->page_description,
-            'settings_display' => true,
-        ];
+        // @todo remove to hide app
+//        $apps_list[ $this->meta_key ] = [
+//            'key'              => $this->meta_key,
+//            'url_base'         => $this->root . '/' . $this->type,
+//            'label'            => $this->page_title,
+//            'description'      => $this->page_description,
+//            'settings_display' => true,
+//        ];
 
         return $apps_list;
     }
