@@ -714,10 +714,10 @@ window.open_create_modal = ( parent_id ) => {
 
   window.load_mapbox( 'groups' )
 
-  if ( typeof jsObject.post.church_reporter !== 'undefined' ) {
+  if ( typeof jsObject.post.reporter !== 'undefined' ) {
     let key_select = jQuery('#create-parent')
     let selected_attr
-    jQuery.each( jsObject.post.church_reporter, function(i,v) {
+    jQuery.each( jsObject.post.reporter, function(i,v) {
       selected_attr = ''
       if ( parseInt(parent_id) === parseInt(v.ID) ) {
         selected_attr = 'selected'
@@ -810,9 +810,9 @@ window.load_domenu = ( data ) => {
         window.post_item('onItemRemoved', { id: e[0].id } ).done(function(removed_id){
           if ( removed_id ) {
             console.log('success onItemRemoved')
-            jQuery.each( jsObject.post.church_reporter, function (i,v) {
+            jQuery.each( jsObject.post.reporter, function (i,v) {
               if ( v.ID === removed_id ) {
-                jsObject.post.church_reporter.splice(i, 1)
+                jsObject.post.reporter.splice(i, 1)
               }
             })
           }

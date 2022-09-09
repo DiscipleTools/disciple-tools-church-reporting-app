@@ -951,11 +951,11 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
         if ( 'groups' === $params["data"]["post_type"] ) {
             // verify contact is a reporter on the contact
             $contact = DT_Posts::get_post( 'contacts', $contact_id, true, false );
-            if ( is_wp_error( $contact ) || empty( $contact ) || ! isset( $contact['church_reporter'] ) ) {
+            if ( is_wp_error( $contact ) || empty( $contact ) || ! isset( $contact['reporter'] ) ) {
                 return new WP_Error( __METHOD__, "No group found", [ 'status' => 400, 'data' => $params ] );
             }
             $has_permission = false;
-            foreach ( $contact['church_reporter'] as $value ) {
+            foreach ( $contact['reporter'] as $value ) {
                 if ( $params["data"]["post_id"] === $value['ID'] ) {
                     $has_permission = true;
                 }
@@ -1032,7 +1032,7 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
             "assigned_to" => $assigned_to,
             "group_status" => "active",
             "group_type" => "church",
-            "church_reporter" => [
+            "reporter" => [
                 "values" => [
                     [ "value" => $post_id ]
                 ]
@@ -1133,7 +1133,7 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
         $post_id = $params["parts"]["post_id"];
         $list = DT_Posts::list_posts('groups', [
             'fields_to_return' => [],
-            'church_reporter' => [ $post_id ]
+            'reporter' => [ $post_id ]
         ], false );
 
         if ( ! empty( $list['posts'] ) ) {
@@ -1180,11 +1180,11 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
                 }
 
                 // custom permission check. Contact must be coaching group to retrieve group
-                if ( ! isset( $group['church_reporter'] ) || empty( $group['church_reporter'] ) ) {
+                if ( ! isset( $group['reporter'] ) || empty( $group['reporter'] ) ) {
                     return new WP_Error( __METHOD__, 'no reporting found for group' );
                 }
                 $found = false;
-                foreach ( $group['church_reporter'] as $coach ) {
+                foreach ( $group['reporter'] as $coach ) {
                     if ( (int) $coach['ID'] === (int) $contact_id ) {
                         $found = true;
                     }
@@ -1273,7 +1273,7 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
 
         $list = DT_Posts::list_posts('groups', [
             'fields_to_return' => [],
-            'church_reporter' => [ $post_id ]
+            'reporter' => [ $post_id ]
         ], false );
 
         $features = [];
@@ -1355,7 +1355,7 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
         $post_id = $this->parts['post_id'];
         $list = DT_Posts::list_posts('groups', [
             'fields_to_return' => [],
-            'church_reporter' => [ $post_id ]
+            'reporter' => [ $post_id ]
         ], false );
 
         if ( ! empty( $list['posts'] ) ) {

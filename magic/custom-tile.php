@@ -99,7 +99,7 @@ class DT_Reporting_App_Fields {
                 "in_create_form" => true,
                 'icon' => get_template_directory_uri() . "/dt-assets/images/sign-post.svg?v=2",
             ];
-            $fields["church_reporter"] = [
+            $fields["reporter"] = [
                 "name" => __( 'Reporter for Churches', 'disciple-tools-reporting-app' ),
                 'description' => _x( 'The person who is reporting on this church.', 'Optional Documentation', 'disciple-tools-reporting-app' ),
                 "type" => "connection",
@@ -119,7 +119,7 @@ class DT_Reporting_App_Fields {
 
         }
         if ( $post_type === "groups" ) {
-            $fields["church_reporter"] = [
+            $fields["reporter"] = [
                 "name" => __( 'Church Reporter', 'disciple-tools-reporting-app' ),
                 'description' => _x( 'The person who is reporting on this church.', 'Optional Documentation', 'disciple-tools-reporting-app' ),
                 "type" => "connection",
