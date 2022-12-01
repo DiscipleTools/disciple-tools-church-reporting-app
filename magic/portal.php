@@ -509,12 +509,12 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
 
     public function home_body(){
         if ( empty( $this->post ) ) {
-            $this->post_id = $this->parts["post_id"];
-            $this->post = DT_Posts::get_post( $this->post_type, $this->parts["post_id"], true, false );
-            if ( is_wp_error( $this->post ) ){
-                return;
-            }
+        $this->post_id = $this->parts["post_id"];
+        $this->post = DT_Posts::get_post( $this->post_type, $this->parts["post_id"], true, false );
+        if ( is_wp_error( $this->post ) ){
+            return;
         }
+    }
         $post = $this->post;
         ?>
         <!-- title -->
@@ -529,13 +529,13 @@ class DT_Reporting_App_Portal extends DT_Magic_Url_Base {
         <?php $this->nav(); ?>
 
         <?php if ( isset( $post['title'] ) ) : ?>
-        <div class="grid-x center">
-            <div class="cell">
-                <h1 style="margin-bottom:0;"><?php echo esc_html__( 'Welcome' ) ?> <?php echo esc_html( $post['title'] ) ?></h1>
-                <a style="font-size: .8rem;" href="<?php echo esc_url( site_url() . '/' . $this->root . '/access/' ) ?>">Not <?php echo esc_html( $post['title'] ) ?>?</a>
+            <div class="grid-x center">
+                <div class="cell">
+                    <h1 style="margin-bottom:0;"><?php echo esc_html__( 'Welcome' ) ?> <?php echo esc_html( $post['title'] ) ?></h1>
+                    <a style="font-size: .8rem;" href="<?php echo esc_url( site_url() . '/' . $this->root . '/access/' ) ?>">Not <?php echo esc_html( $post['title'] ) ?>?</a>
+                </div>
             </div>
-        </div>
-        <hr>
+            <hr>
         <?php endif; ?>
 
         <div id="wrapper">
